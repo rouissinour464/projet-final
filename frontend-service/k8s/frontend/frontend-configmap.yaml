@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  USER_SERVICE: http://user-service:5000
+  STATS_SERVICE: http://stats-service:6000

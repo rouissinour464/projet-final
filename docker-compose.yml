@@ -1,0 +1,63 @@
+
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
+    ports:
+      - "5433:5432"  # Port hôte modifié pour éviter conflit
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    restart: always
+
+  user-service:
+    image: nour292/user-service:latest
+    container_name: user-service
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_NAME: database
+    depends_on:
+      - postgres
+    ports:
+      - "5001:5000"
+    restart: always
+
+  stats-service:
+    image: nour292/stats-service:latest
+    container_name: stats-service
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_NAME: database
+    depends_on:
+      - postgres
+    ports:
+      - "6000:6000"
+    restart: always
+
+  frontend-service:
+    image: nour292/frontend-service:latest
+    container_name: frontend-service
+    environment:
+      USER_SERVICE: http://user-service:5000
+      STATS_SERVICE: http://stats-service:6000
+    depends_on:
+      - user-service
+      - stats-service
+    ports:
+      - "7000:7000"
+    restart: always
+
+volumes:
+  postgres-data:

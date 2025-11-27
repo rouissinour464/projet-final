@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stats-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stats-service
+  template:
+    metadata:
+      labels:
+        app: stats-service
+    spec:
+      containers:
+        - name: stats-service
+          image: nour292/stats-service:latest
+          envFrom:
+            - configMapRef:
+                name: stats-config
+            - secretRef:
+                name: postgres-secret
+          ports:
+            - containerPort: 6000

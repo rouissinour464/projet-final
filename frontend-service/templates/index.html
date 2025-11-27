@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Frontend Users</title>
+</head>
+<body>
+    <h1>Ajouter un utilisateur</h1>
+    <form method="post">
+        <label>Nom:</label>
+        <input type="text" name="name" required>
+        <label>Email:</label>
+        <input type="email" name="email" required>
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <h2>Liste des utilisateurs</h2>
+    <ul>
+        {% for user in users %}
+        <li>{{ user.name }} - {{ user.email }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Statistiques</h2>
+    <p>Total utilisateurs: {{ total_users }}</p>
+</body>
+</html>
