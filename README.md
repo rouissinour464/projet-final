@@ -67,3 +67,14 @@ PostgreSQL avec init.sql pour créer les tables :
 - stats(id, metric, value)
 ## ■ Diagramme Architecture
 Frontend → API → Services → PostgreSQL
+Architecture Diagram
++-------------------+       +-------------------+
+|   Frontend        | --->  |   User Service    |
+| (Flask + HTML)    |       | (Flask API)       |
++-------------------+       +-------------------+
+         |                          |
+         v                          v
++-------------------+       +-------------------+
+|   Stats Service   | --->  |   PostgreSQL DB   |
+| (Flask API)       |       | (StatefulSet)     |
++-------------------+       +-------------------+
